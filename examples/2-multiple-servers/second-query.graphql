@@ -1,0 +1,13 @@
+query GetAnimals {
+  animals {
+    name
+    weight
+  }
+}
+
+mutation AddAnimal {
+  addAnimal(input: { name: "Elephant", weight: 2000 }) {
+    name
+    weight
+  }
+}
