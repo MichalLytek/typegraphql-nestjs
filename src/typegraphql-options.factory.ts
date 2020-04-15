@@ -37,7 +37,10 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
 
     for (const module of this.modulesContainer.values()) {
       for (const provider of module.providers.values()) {
-        if (provider.name.includes(TYPEGRAPHQL_FEATURE_MODULE_OPTIONS)) {
+        if (
+          typeof provider.name === "string" &&
+          provider.name.includes(TYPEGRAPHQL_FEATURE_MODULE_OPTIONS)
+        ) {
           featureModuleOptionsArray.push(
             provider.instance as TypeGraphQLFeatureModuleOptions,
           );
