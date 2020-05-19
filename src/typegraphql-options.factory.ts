@@ -1,6 +1,6 @@
 import { Injectable, Inject, flatten } from "@nestjs/common";
 import { GqlOptionsFactory, GqlModuleOptions } from "@nestjs/graphql";
-import { ModulesContainer, ModuleRef } from "@nestjs/core";
+import { ModulesContainer, ModuleRef, ContextIdFactory } from "@nestjs/core";
 import {
   buildSchema,
   ClassType,
@@ -17,6 +17,7 @@ import {
   TypeGraphQLRootModuleOptions,
   TypeGraphQLFeatureModuleOptions,
 } from "./types";
+import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
 
 @Injectable()
 export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
@@ -55,7 +56,14 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
       featureModuleOptionsArray.map(it => it.orphanedTypes),
     );
     const container: ContainerType = {
-      get: cls => this.moduleRef.get(cls, { strict: false }),
+      get: (cls, { context }) => {
+        let contextId = context[REQUEST_CONTEXT_ID];
+        if (!contextId) {
+          contextId = ContextIdFactory.create();
+          context[REQUEST_CONTEXT_ID] = contextId;
+        }
+        return this.moduleRef.resolve(cls, contextId, { strict: false });
+      },
     };
 
     const schema = await buildSchema({
