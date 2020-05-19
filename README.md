@@ -112,6 +112,10 @@ You can see some examples of the integration in this repo:
 
    Advanced usage of multiple schemas inside single NestJS app - demonstration of schema isolation in modules and `TypeGraphQLModule.forFeature` usage
 
+1. [Request scoped dependencies](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/3-request-scoped)
+
+   Usage of request scoped dependencies - retrieving fresh instances of resolver and service classes on every request (query/mutation)
+
 You can run them by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 
-All folders contain a `query.graphgql` file with some examples operations you can perform on the GraphQL servers.
+All examples folders contain a `query.gql` file with some examples operations you can perform on the GraphQL servers.

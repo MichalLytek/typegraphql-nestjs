@@ -1,0 +1,19 @@
+query GetRecipes {
+  # returning request scoped recipes list from `RecipeService`
+  # which is empty for every request (`recipes: Recipe[] = []`)
+  recipes {
+    title
+    description
+  }
+}
+
+mutation AddRecipe {
+  addRecipe(input: { title: "My Recipe", description: "My description" }) {
+    # returning request scoped recipes list from `RecipeService`
+    # which contains just added recipe
+    recipes {
+      title
+      description
+    }
+  }
+}
