@@ -18,6 +18,7 @@ import {
   TypeGraphQLFeatureModuleOptions,
 } from "./types";
 import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
+import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 
 @Injectable()
 export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
@@ -35,6 +36,7 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
 
     const featureModuleOptionsArray: TypeGraphQLFeatureModuleOptions[] = [];
     const resolvers: ClassType[] = [];
+    const providersMetadataMap = new Map<Function, InstanceWrapper<any>>();
 
     for (const module of this.modulesContainer.values()) {
       for (const provider of module.providers.values()) {
@@ -47,6 +49,7 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
           );
         }
         if (globalResolvers.includes(provider.metatype)) {
+          providersMetadataMap.set(provider.metatype, provider);
           resolvers.push(provider.metatype as ClassType);
         }
       }
@@ -61,6 +64,13 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
         if (!contextId) {
           contextId = ContextIdFactory.create();
           context[REQUEST_CONTEXT_ID] = contextId;
+        }
+        const providerMetadata = providersMetadataMap.get(cls)!;
+        if (
+          providerMetadata.isDependencyTreeStatic() &&
+          !providerMetadata.isTransient
+        ) {
+          return this.moduleRef.get(cls, { strict: false });
         }
         return this.moduleRef.resolve(cls, contextId, { strict: false });
       },
