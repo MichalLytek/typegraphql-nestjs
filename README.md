@@ -11,14 +11,16 @@ Allows to use TypeGraphQL features while integrating with NestJS modules system 
 
 ## Installation
 
+First, you need to instal the `typegraphql-nestjs` module along with `@nestjs/graphql`:
+
 ```sh
 npm i typegraphql-nestjs @nestjs/graphql
 ```
 
-or
+If you haven't installed it yet, it's time to add `type-graphql` into the project:
 
 ```sh
-yarn add typegraphql-nestjs @nestjs/graphql
+npm i type-graphql
 ```
 
 ## How to use?
