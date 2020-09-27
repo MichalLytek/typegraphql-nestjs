@@ -25,9 +25,11 @@ npm i type-graphql
 
 ## How to use?
 
-The `typegraphql-nestjs` package exports `TypeGraphQLModule` dynamic module, which is based on the official NestJS `GraphQLModule`.
+The `typegraphql-nestjs` package exports `TypeGraphQLModule` dynamic module, which is based on the official NestJS `GraphQLModule`. It exposes three static methods:
 
-It exposes two static methods. The first one is `TypeGraphQLModule.forRoot()` which you should call on your root module, just like with `GraphQLModule`.
+### `.forRoot()`
+
+The first one is `TypeGraphQLModule.forRoot()` which you should call on your root module, just like with the official `GraphQLModule`.
 
 The only difference is that as its argument you can provide [typical TypeGraphQL `buildSchema` options](https://typegraphql.com/docs/bootstrap.html) like `emitSchemaFile` or `authChecker` apart from the [standard `GqlModuleOptions` from `@nestjs/graphql`](https://docs.nestjs.com/graphql/quick-start#installation) like `installSubscriptionHandlers` or `context`:
 
@@ -71,6 +73,8 @@ And that's it! 😁
 
 Notice that the resolvers classes are automatically inferred from your submodules `providers` array, so you don't need to specify `resolvers` property from TypeGraphQL `buildSchema` options inside `TypeGraphQLModule.forRoot()`.
 
+### `.forFeature()`
+
 In case of need to provide `orphanedTypes` setting, you should use `TypeGraphQLModule.forFeature()`. The recommended place for that is in the module where the orphaned type (like `SuperRecipe`) belongs:
 
 ```ts
@@ -93,6 +97,34 @@ export default class RecipeModule {}
 ```
 
 Using `.forFeature()` ensures proper schemas isolation and automatically supply `orphanedTypes` option for underlying `buildSchema` from TypeGraphQL - again, there's no need to provide it manually in `.forRoot()` options.
+
+### `.forRootAsync()`
+
+If you need to access some services to construct the `TypeGraphQLModule` options, you might be interested in the `TypeGraphQLModule.forRootAsync()` method. It allows you to define your own `useFactory` implementation where you have injected services from `imports` option.
+
+Example of using the config service to generate `TypeGraphQLModule` options:
+
+```ts
+@Module({
+  imports: [
+    ConfigModule,
+    RecipeModule,
+    TypeGraphQLModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        cors: true,
+        debug: config.isDevelopmentMode,
+        playground: !config.isDevelopmentMode,
+        validate: false,
+        dateScalarMode: "timestamp",
+        emitSchemaFile:
+          config.isDevelopmentMode && path.resolve(__dirname, "schema.gql"),
+      }),
+    }),
+  ],
+})
+export default class AppModule {}
+```
 
 ## Caveats
 
