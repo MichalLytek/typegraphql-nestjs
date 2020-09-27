@@ -53,16 +53,18 @@ export class TypeGraphQLModule {
       ...dynamicGraphQLModule,
       providers: [
         ...dynamicGraphQLModule.providers!,
-        this.createOptionsProvider(asyncOptions),
+        this.createAsyncOptionsProvider(asyncOptions),
       ],
     };
   }
 
-  private static createOptionsProvider(
+  private static createAsyncOptionsProvider(
     asyncOptions: TypeGraphQLRootModuleAsyncOptions,
   ) {
     if (!asyncOptions.useFactory) {
-      throw new Error("registerAsync must have 'useFactory'");
+      throw new Error(
+        "`TypeGraphQLModule.forRootAsync` must have 'useFactory' defined",
+      );
     }
     return {
       inject: asyncOptions.inject || [],
