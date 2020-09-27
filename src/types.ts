@@ -16,7 +16,7 @@ export type TypeGraphQLRootModuleOptions = Omit<
 export interface TypeGraphQLRootModuleAsyncOptions
   extends Pick<ModuleMetadata, "imports"> {
   inject?: any[];
-  useFactory?: (
+  useFactory: (
     ...args: any[]
   ) => Promise<TypeGraphQLRootModuleOptions> | TypeGraphQLRootModuleOptions;
 }

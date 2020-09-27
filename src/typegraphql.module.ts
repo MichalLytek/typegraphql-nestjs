@@ -1,5 +1,6 @@
 import { Module, DynamicModule } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
+
 import {
   TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
   TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
@@ -53,23 +54,12 @@ export class TypeGraphQLModule {
       ...dynamicGraphQLModule,
       providers: [
         ...dynamicGraphQLModule.providers!,
-        this.createAsyncOptionsProvider(asyncOptions),
+        {
+          inject: asyncOptions.inject,
+          provide: TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
+          useFactory: asyncOptions.useFactory,
+        },
       ],
-    };
-  }
-
-  private static createAsyncOptionsProvider(
-    asyncOptions: TypeGraphQLRootModuleAsyncOptions,
-  ) {
-    if (!asyncOptions.useFactory) {
-      throw new Error(
-        "`TypeGraphQLModule.forRootAsync` must have 'useFactory' defined",
-      );
-    }
-    return {
-      inject: asyncOptions.inject || [],
-      provide: TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
-      useFactory: asyncOptions.useFactory,
     };
   }
 }
