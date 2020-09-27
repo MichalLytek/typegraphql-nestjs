@@ -1,6 +1,6 @@
 import { BuildSchemaOptions } from "type-graphql";
 import { GqlModuleOptions } from "@nestjs/graphql";
-import { ModuleMetadata } from "@nestjs/common/interfaces";
+import { FactoryProvider, ModuleMetadata } from "@nestjs/common/interfaces";
 
 export type TypeGraphQLFeatureModuleOptions = Pick<
   BuildSchemaOptions,
@@ -14,9 +14,10 @@ export type TypeGraphQLRootModuleOptions = Omit<
   Omit<BuildSchemaOptions, "resolvers" | "orphanedTypes" | "container">;
 
 export interface TypeGraphQLRootModuleAsyncOptions
-  extends Pick<ModuleMetadata, "imports"> {
-  inject?: any[];
-  useFactory: (
-    ...args: any[]
-  ) => Promise<TypeGraphQLRootModuleOptions> | TypeGraphQLRootModuleOptions;
-}
+  extends Pick<ModuleMetadata, "imports">,
+    Pick<
+      FactoryProvider<
+        Promise<TypeGraphQLRootModuleOptions> | TypeGraphQLRootModuleOptions
+      >,
+      "inject" | "useFactory"
+    > {}
