@@ -45,9 +45,10 @@ export class TypeGraphQLModule {
   }
 
   static forRootAsync(
-    asyncOptions: TypeGraphQLRootModuleAsyncOptions,
+    options: TypeGraphQLRootModuleAsyncOptions,
   ): DynamicModule {
     const dynamicGraphQLModule = GraphQLModule.forRootAsync({
+      imports: options.imports,
       useClass: TypeGraphQLOptionsFactory,
     });
     return {
@@ -55,9 +56,9 @@ export class TypeGraphQLModule {
       providers: [
         ...dynamicGraphQLModule.providers!,
         {
-          inject: asyncOptions.inject,
+          inject: options.inject,
           provide: TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
-          useFactory: asyncOptions.useFactory,
+          useFactory: options.useFactory,
         },
       ],
     };
