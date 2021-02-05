@@ -1,6 +1,8 @@
-import { Injectable, Inject, flatten } from "@nestjs/common";
-import { GqlOptionsFactory, GqlModuleOptions } from "@nestjs/graphql";
-import { ModulesContainer, ModuleRef, ContextIdFactory } from "@nestjs/core";
+import { flatten, Inject, Injectable } from "@nestjs/common";
+import { ContextIdFactory, ModuleRef, ModulesContainer } from "@nestjs/core";
+import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
+import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
+import { GqlModuleOptions, GqlOptionsFactory } from "@nestjs/graphql";
 import {
   buildSchema,
   ClassType,
@@ -8,17 +10,14 @@ import {
   getMetadataStorage,
   NonEmptyArray,
 } from "type-graphql";
-
 import {
-  TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
   TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
+  TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
 } from "./constants";
 import {
-  TypeGraphQLRootModuleOptions,
   TypeGraphQLFeatureModuleOptions,
+  TypeGraphQLRootModuleOptions,
 } from "./types";
-import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
-import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 
 @Injectable()
 export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
