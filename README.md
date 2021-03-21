@@ -126,6 +126,57 @@ Example of using the config service to generate `TypeGraphQLModule` options:
 export default class AppModule {}
 ```
 
+### `TypeGraphQLFederationModule`
+
+`typegraphql-nestjs` has also support for [Apollo Federation](https://www.apollographql.com/docs/federation/).
+
+However, Apollo Federation requires building a federated GraphQL schema, hence you need to use the `TypeGraphQLFederationModule` module, designed specially for that case.
+
+The usage is really similar to the basic `TypeGraphQLModule` - the only different is that `.forFeature()` method has an option to provide `referenceResolvers` object which is needed in some cases of Apollo Federation:
+
+```ts
+function resolveUserReference(
+  reference: Pick<User, "id">,
+): Promise<User | undefined> {
+  return db.users.find({ id: reference.id });
+}
+
+@Module({
+  imports: [
+    TypeGraphQLFederationModule.forFeature({
+      orphanedTypes: [User],
+      referenceResolvers: {
+        User: {
+          __resolveReference: resolveUserReference,
+        },
+      },
+    }),
+  ],
+  providers: [AccountsResolver],
+})
+export default class AccountModule {}
+```
+
+The `.forRoot()` method has no differences but you should provide the `skipCheck: true` option as federated schema can violate the standard GraphQL schema rules like at least one query defined:
+
+```ts
+@Module({
+  imports: [
+    TypeGraphQLFederationModule.forRoot({
+      validate: false,
+      skipCheck: true,
+    }),
+    AccountModule,
+  ],
+})
+export default class AppModule {}
+```
+
+> Be aware that you cannot mix `TypeGraphQLFederationModule.forRoot()` with the base `TypeGraphQLModule.forFeature()` one.
+> You need to consistently use only `TypeGraphQLFederationModule` across all modules.
+
+Then, for exposing the federated schema using Apollo Gateway, you should use the standard NestJS [GraphQLGatewayModule](https://docs.nestjs.com/graphql/federation#federated-example-gateway).
+
 ## Caveats
 
 While this integration provides a way to use TypeGraphQL with NestJS modules and dependency injector, for now it doesn't support [other NestJS features](https://docs.nestjs.com/graphql/tooling) like guards, interceptors, filters and pipes.
@@ -149,6 +200,10 @@ You can see some examples of the integration in this repo:
 1. [Request scoped dependencies](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/3-request-scoped)
 
    Usage of request scoped dependencies - retrieving fresh instances of resolver and service classes on every request (query/mutation)
+
+1. [Apollo Federation](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/4-federation)
+
+   Showcase of Apollo Federation approach, using the `TypeGraphQLFederationModule` and `GraphQLGatewayModule`.
 
 You can run them by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 

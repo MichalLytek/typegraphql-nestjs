@@ -11,15 +11,19 @@
     "test": "jest"
   },
   "peerDependencies": {
+    "@apollo/federation": "^0.17.0",
     "@nestjs/common": "^7.6.13",
     "@nestjs/core": "^7.6.13",
     "@nestjs/graphql": "^7.9.10",
+    "apollo-graphql": "^0.4.5",
+    "graphql-tag": "^2.12.1",
     "type-graphql": "^1.1.1"
   },
   "dependencies": {
     "tslib": "^2.1.0"
   },
   "devDependencies": {
+    "@apollo/federation": "^0.17.0",
     "@nestjs/common": "^7.6.13",
     "@nestjs/core": "^7.6.13",
     "@nestjs/graphql": "^7.9.10",
@@ -27,9 +31,11 @@
     "@nestjs/testing": "^7.6.13",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.31",
+    "apollo-graphql": "^0.4.5",
     "apollo-server-fastify": "^2.21.0",
     "class-validator": "^0.13.1",
     "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.1",
     "graphql-tools": "^7.0.4",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
