@@ -5,6 +5,7 @@ import {
   TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
   TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
 } from "./constants";
+import OptionsPreparatorService from "./prepare-options.service";
 import TypeGraphQLOptionsFactory from "./typegraphql-options.factory";
 import {
   TypeGraphQLFeatureModuleOptions,
@@ -36,6 +37,7 @@ export class TypeGraphQLModule {
       ...dynamicGraphQLModule,
       providers: [
         ...dynamicGraphQLModule.providers!,
+        OptionsPreparatorService,
         {
           provide: TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
           useValue: options,
@@ -55,6 +57,7 @@ export class TypeGraphQLModule {
       ...dynamicGraphQLModule,
       providers: [
         ...dynamicGraphQLModule.providers!,
+        OptionsPreparatorService,
         {
           inject: options.inject,
           provide: TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
