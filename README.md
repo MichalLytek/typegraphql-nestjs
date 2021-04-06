@@ -183,7 +183,7 @@ While this integration provides a way to use TypeGraphQL with NestJS modules and
 
 To achieve the same goals, you can use standard TypeGraphQL equivalents - middlewares, custom decorators, built-in authorization and validation.
 
-Moreover, with `typegraphql-nestjs` you can also take advantage of additional features (comparing to `@nestjs/graphql`) like [inline field resolvers](https://typegraphql.com/docs/resolvers.html#field-resolvers), [Prisma 2 integration](https://github.com/MichalLytek/typegraphql-prisma/Readme.md) or up-to-date capabilities like deprecating input fields and args (thanks to always synced with latests `graphql-js`).
+Moreover, with `typegraphql-nestjs` you can also take advantage of additional features (comparing to `@nestjs/graphql`) like [inline field resolvers](https://typegraphql.com/docs/resolvers.html#field-resolvers), [Prisma 2 integration](https://github.com/MichalLytek/typegraphql-prisma/blob/main/Readme.md) or up-to-date capabilities like deprecating input fields and args (thanks to always synced with latests `graphql-js`).
 
 ## Examples
 
