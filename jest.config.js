@@ -8,15 +8,12 @@ module.exports = {
   rootDir: "./",
   roots: ["<rootDir>/tests", "<rootDir>/src"],
   collectCoverage: false,
-  collectCoverageFrom: [
-    "<rootDir>/src/**/*.ts",
-    "!<rootDir>/src/**/*.d.ts",
-  ],
+  collectCoverageFrom: ["<rootDir>/src/**/*.ts", "!<rootDir>/src/**/*.d.ts"],
   coverageDirectory: "<rootDir>/coverage",
   testEnvironment: "node",
   globals: {
-    'ts-jest': {
-      tsConfig: '<rootDir>/tests/tsconfig.json'
-    }
+    "ts-jest": {
+      tsconfig: "<rootDir>/tests/tsconfig.json",
+    },
   },
 };
