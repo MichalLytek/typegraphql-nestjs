@@ -24,7 +24,8 @@ import {
 
 @Injectable()
 export default class TypeGraphQLFederationOptionsFactory
-  implements GqlOptionsFactory {
+  implements GqlOptionsFactory
+{
   constructor(
     @Inject(TYPEGRAPHQL_ROOT_FEDERATION_MODULE_OPTIONS)
     private readonly rootModuleOptions: TypeGraphQLRootFederationModuleOptions,
@@ -32,6 +33,7 @@ export default class TypeGraphQLFederationOptionsFactory
   ) {}
 
   async createGqlOptions(): Promise<GqlModuleOptions> {
+    const { globalMiddlewares } = this.rootModuleOptions;
     const {
       resolversClasses,
       container,
@@ -39,6 +41,7 @@ export default class TypeGraphQLFederationOptionsFactory
       featureModuleOptionsArray,
     } = this.optionsPreparatorService.prepareOptions<TypeGraphQLFeatureFedarationModuleOptions>(
       TYPEGRAPHQL_FEATURE_FEDERATION_MODULE_OPTIONS,
+      globalMiddlewares,
     );
 
     const referenceResolversArray = [...featureModuleOptionsArray].filter(
