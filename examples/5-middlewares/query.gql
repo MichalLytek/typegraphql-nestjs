@@ -1,0 +1,13 @@
+query GetRecipes {
+  recipes {
+    title
+    description
+  }
+}
+
+mutation AddRecipe {
+  addRecipe(input: { title: "My Recipe", description: "My description" }) {
+    title
+    description
+  }
+}

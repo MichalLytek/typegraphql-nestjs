@@ -21,13 +21,12 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
   ) {}
 
   async createGqlOptions(): Promise<GqlModuleOptions> {
-    const {
-      resolversClasses,
-      container,
-      orphanedTypes,
-    } = this.optionsPreparatorService.prepareOptions<TypeGraphQLFeatureModuleOptions>(
-      TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
-    );
+    const { globalMiddlewares } = this.rootModuleOptions;
+    const { resolversClasses, container, orphanedTypes } =
+      this.optionsPreparatorService.prepareOptions<TypeGraphQLFeatureModuleOptions>(
+        TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
+        globalMiddlewares,
+      );
 
     const schema = await buildSchema({
       ...this.rootModuleOptions,

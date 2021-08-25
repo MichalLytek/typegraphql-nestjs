@@ -205,6 +205,10 @@ You can see some examples of the integration in this repo:
 
    Showcase of Apollo Federation approach, using the `TypeGraphQLFederationModule` and `GraphQLGatewayModule`.
 
+1. [Middlewares](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/5-middlewares)
+
+   Usage of class-based middlewares - modules, providers and schema options
+
 You can run them by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 
 All examples folders contain a `query.gql` file with some examples operations you can perform on the GraphQL servers.

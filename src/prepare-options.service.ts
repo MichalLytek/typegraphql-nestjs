@@ -3,6 +3,7 @@ import { ModulesContainer, ModuleRef, ContextIdFactory } from "@nestjs/core";
 import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
 import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { ClassType, ContainerType, getMetadataStorage } from "type-graphql";
+import { Middleware } from "type-graphql/dist/interfaces/Middleware";
 
 import { TypeGraphQLFeatureModuleOptions } from "./types";
 
@@ -15,10 +16,14 @@ export default class OptionsPreparatorService {
 
   prepareOptions<TOptions extends TypeGraphQLFeatureModuleOptions>(
     featureModuleToken: string,
+    globalMiddlewares: Middleware<any>[] = [],
   ) {
     const globalResolvers = getMetadataStorage().resolverClasses.map(
       metadata => metadata.target,
     );
+    const globalMiddlewareClasses = globalMiddlewares.filter(
+      it => it.prototype,
+    ) as Function[];
 
     const featureModuleOptionsArray: TOptions[] = [];
     const resolversClasses: ClassType[] = [];
@@ -35,6 +40,9 @@ export default class OptionsPreparatorService {
         if (globalResolvers.includes(provider.metatype)) {
           providersMetadataMap.set(provider.metatype, provider);
           resolversClasses.push(provider.metatype as ClassType);
+        }
+        if (globalMiddlewareClasses.includes(provider.metatype)) {
+          providersMetadataMap.set(provider.metatype, provider);
         }
       }
     }
