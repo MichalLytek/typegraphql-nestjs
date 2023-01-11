@@ -1,16 +1,16 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
 import {
-  NestFastifyApplication,
-  FastifyAdapter,
-} from "@nestjs/platform-fastify";
+  NestExpressApplication,
+  ExpressAdapter,
+} from "@nestjs/platform-express";
 
 import AppModule from "./app.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
+  const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new ExpressAdapter(),
   );
 
   await app.listen(3000);

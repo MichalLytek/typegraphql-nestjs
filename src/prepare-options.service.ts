@@ -12,9 +12,9 @@ export default class OptionsPreparatorService {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly modulesContainer: ModulesContainer,
-  ) {}
+  ) { }
 
-  prepareOptions<TOptions extends TypeGraphQLFeatureModuleOptions>(
+  prepareOptions(
     featureModuleToken: string,
     globalMiddlewares: Middleware<any>[] = [],
   ) {
@@ -25,7 +25,7 @@ export default class OptionsPreparatorService {
       it => it.prototype,
     ) as Function[];
 
-    const featureModuleOptionsArray: TOptions[] = [];
+    const featureModuleOptionsArray: TypeGraphQLFeatureModuleOptions[] = [];
     const resolversClasses: ClassType[] = [];
     const providersMetadataMap = new Map<Function, InstanceWrapper<any>>();
 
@@ -35,7 +35,7 @@ export default class OptionsPreparatorService {
           typeof provider.name === "string" &&
           provider.name.includes(featureModuleToken)
         ) {
-          featureModuleOptionsArray.push(provider.instance as TOptions);
+          featureModuleOptionsArray.push(provider.instance as TypeGraphQLFeatureModuleOptions);
         }
         if (globalResolvers.includes(provider.metatype)) {
           providersMetadataMap.set(provider.metatype, provider);
@@ -50,6 +50,19 @@ export default class OptionsPreparatorService {
     const orphanedTypes = flatten(
       featureModuleOptionsArray.map(it => it.orphanedTypes),
     );
+
+    const referenceResolversArray = [...featureModuleOptionsArray].filter(
+      it => it.referenceResolvers,
+    );
+    const referenceResolvers =
+      referenceResolversArray.length > 0
+        ? Object.fromEntries(
+          referenceResolversArray.flatMap(it =>
+            Object.entries(it.referenceResolvers!),
+          ),
+        )
+        : undefined;
+
     const container: ContainerType = {
       get: (cls, { context }) => {
         let contextId = context[REQUEST_CONTEXT_ID];
@@ -73,6 +86,7 @@ export default class OptionsPreparatorService {
       orphanedTypes,
       container,
       featureModuleOptionsArray,
+      referenceResolvers,
     };
   }
 }

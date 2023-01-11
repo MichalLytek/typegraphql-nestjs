@@ -1,4 +1,5 @@
 import { Test } from "@nestjs/testing";
+import { ApolloDriver } from "@nestjs/apollo";
 import { Resolver, Query } from "type-graphql";
 import fs from "fs";
 import path from "path";
@@ -30,6 +31,7 @@ describe("Providers name checking", () => {
     const module = await Test.createTestingModule({
       imports: [
         TypeGraphQLModule.forRoot({
+          driver: ApolloDriver,
           emitSchemaFile: true,
         }),
       ],
@@ -57,8 +59,7 @@ describe("Providers name checking", () => {
       type Query {
         hello: String!
         world: String!
-      }
-      "
+      }"
     `);
 
     module.close();

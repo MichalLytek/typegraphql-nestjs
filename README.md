@@ -43,6 +43,7 @@ import { authChecker } from "./auth";
 @Module({
   imports: [
     TypeGraphQLModule.forRoot({
+      driver: ApolloDriver,
       emitSchemaFile: true,
       validate: false,
       authChecker,
@@ -112,6 +113,7 @@ Example of using the config service to generate `TypeGraphQLModule` options:
     TypeGraphQLModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
+        driver: ApolloDriver,
         cors: true,
         debug: config.isDevelopmentMode,
         playground: !config.isDevelopmentMode,
@@ -126,13 +128,13 @@ Example of using the config service to generate `TypeGraphQLModule` options:
 export default class AppModule {}
 ```
 
-### `TypeGraphQLFederationModule`
+### Apollo Federation
 
 `typegraphql-nestjs` has also support for [Apollo Federation](https://www.apollographql.com/docs/federation/).
 
-However, Apollo Federation requires building a federated GraphQL schema, hence you need to use the `TypeGraphQLFederationModule` module, designed specially for that case.
+However, Apollo Federation requires building a federated GraphQL schema, hence you need to adjust your code a bit.
 
-The usage is really similar to the basic `TypeGraphQLModule` - the only different is that `.forFeature()` method has an option to provide `referenceResolvers` object which is needed in some cases of Apollo Federation:
+The usage is really similar to the basic case - the only difference is that in `TypeGraphQLModule.forFeature()` method you can provide a `referenceResolvers` option object, which is needed in some cases of Apollo Federation:
 
 ```ts
 function resolveUserReference(
@@ -143,7 +145,7 @@ function resolveUserReference(
 
 @Module({
   imports: [
-    TypeGraphQLFederationModule.forFeature({
+    TypeGraphQLModule.forFeature({
       orphanedTypes: [User],
       referenceResolvers: {
         User: {
@@ -157,14 +159,14 @@ function resolveUserReference(
 export default class AccountModule {}
 ```
 
-The `.forRoot()` method has no differences but you should provide the `skipCheck: true` option as federated schema can violate the standard GraphQL schema rules like at least one query defined:
+For the `.forRoot()` method there's no differences - just need to provide `driver: ApolloFederationDriver` option in order to build a subgraph schema, same as with `GraphQLModule` from `@nestjs/graphql` described in the [NestJS docs](https://docs.nestjs.com/graphql/federation). However, you also need to explicitly setup federation version, by using `federationVersion` option:
 
 ```ts
 @Module({
   imports: [
-    TypeGraphQLFederationModule.forRoot({
-      validate: false,
-      skipCheck: true,
+    TypeGraphQLModule.forRoot({
+      driver: ApolloFederationDriver,
+      federationVersion: 2,
     }),
     AccountModule,
   ],
@@ -172,10 +174,7 @@ The `.forRoot()` method has no differences but you should provide the `skipCheck
 export default class AppModule {}
 ```
 
-> Be aware that you cannot mix `TypeGraphQLFederationModule.forRoot()` with the base `TypeGraphQLModule.forFeature()` one.
-> You need to consistently use only `TypeGraphQLFederationModule` across all modules.
-
-Then, for exposing the federated schema using Apollo Gateway, you should use the standard NestJS [GraphQLGatewayModule](https://docs.nestjs.com/graphql/federation#federated-example-gateway).
+Then, for exposing the federated schema using Apollo Gateway, you should use the standard [NestJS `ApolloGatewayDriver` solution](https://docs.nestjs.com/graphql/federation#federated-example-gateway).
 
 ## Caveats
 
@@ -201,13 +200,13 @@ You can see some examples of the integration in this repo:
 
    Usage of request scoped dependencies - retrieving fresh instances of resolver and service classes on every request (query/mutation)
 
-1. [Apollo Federation](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/4-federation)
-
-   Showcase of Apollo Federation approach, using the `TypeGraphQLFederationModule` and `GraphQLGatewayModule`.
-
-1. [Middlewares](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/5-middlewares)
+1. [Middlewares](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/4-middlewares)
 
    Usage of class-based middlewares - modules, providers and schema options
+
+1. [Apollo Federation](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/5-federation)
+
+   Showcase of Apollo Federation approach
 
 You can run them by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 

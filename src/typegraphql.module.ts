@@ -31,6 +31,7 @@ export class TypeGraphQLModule {
 
   static forRoot(options: TypeGraphQLRootModuleOptions = {}): DynamicModule {
     const dynamicGraphQLModule = GraphQLModule.forRootAsync({
+      driver: options.driver,
       useClass: TypeGraphQLOptionsFactory,
     });
     return {
@@ -50,6 +51,7 @@ export class TypeGraphQLModule {
     options: TypeGraphQLRootModuleAsyncOptions,
   ): DynamicModule {
     const dynamicGraphQLModule = GraphQLModule.forRootAsync({
+      driver: options.driver,
       imports: options.imports,
       useClass: TypeGraphQLOptionsFactory,
     });
