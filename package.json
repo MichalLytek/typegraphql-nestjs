@@ -89,7 +89,7 @@
     "graphql"
   ],
   "engines": {
-    "node": ">= 10.3"
+    "node": ">= 16.0"
   },
   "private": true
 }
