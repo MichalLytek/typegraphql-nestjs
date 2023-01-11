@@ -204,10 +204,14 @@ You can see some examples of the integration in this repo:
 
    Usage of class-based middlewares - modules, providers and schema options
 
-1. [Apollo Federation](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/5-federation)
+1. [Apollo Federation (OLD)](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/5-federation)
 
-   Showcase of Apollo Federation approach
+   Showcase of the legacy Apollo Federation approach
 
-You can run them by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
+1. [Apollo Federation V2](https://github.com/MichalLytek/typegraphql-nestjs/tree/master/examples/6-federation-2)
+
+   Showcase of the new Apollo Federation V2 approach
+
+Most of them you can run by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 
 All examples folders contain a `query.gql` file with some examples operations you can perform on the GraphQL servers.
