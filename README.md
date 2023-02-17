@@ -215,3 +215,9 @@ You can see some examples of the integration in this repo:
 Most of them you can run by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 
 All examples folders contain a `query.gql` file with some examples operations you can perform on the GraphQL servers.
+
+## Security contact information
+
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
