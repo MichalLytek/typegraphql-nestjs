@@ -111,9 +111,9 @@ Example of using the config service to generate `TypeGraphQLModule` options:
     ConfigModule,
     RecipeModule,
     TypeGraphQLModule.forRootAsync({
+      driver: ApolloDriver,
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        driver: ApolloDriver,
         cors: true,
         debug: config.isDevelopmentMode,
         playground: !config.isDevelopmentMode,
