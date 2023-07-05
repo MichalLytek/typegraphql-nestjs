@@ -9,7 +9,6 @@ import AccountModule from "./account.module";
     TypeGraphQLModule.forRoot({
       driver: ApolloFederationDriver,
       federationVersion: 2,
-      validate: false,
       skipCheck: true,
     }),
     AccountModule,

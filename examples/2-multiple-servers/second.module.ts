@@ -10,9 +10,8 @@ import AnimalModule from "./animal/module";
     TypeGraphQLModule.forRoot({
       driver: ApolloDriver,
       emitSchemaFile: path.resolve(__dirname, "second-schema.graphql"),
-      validate: false,
     }),
     AnimalModule,
   ],
 })
-export default class SecondAppModule { }
+export default class SecondAppModule {}

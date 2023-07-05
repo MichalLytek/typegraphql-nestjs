@@ -9,7 +9,6 @@ import ProductsModule from "./products.module";
     TypeGraphQLModule.forRoot({
       driver: ApolloFederationDriver,
       federationVersion: 1,
-      validate: false,
       skipCheck: true,
     }),
     ProductsModule,

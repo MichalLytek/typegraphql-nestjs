@@ -10,9 +10,8 @@ import RecipeModule from "./recipe/module";
     TypeGraphQLModule.forRoot({
       driver: ApolloDriver,
       emitSchemaFile: true,
-      validate: false,
     }),
     RecipeModule,
   ],
 })
-export default class AppModule { }
+export default class AppModule {}

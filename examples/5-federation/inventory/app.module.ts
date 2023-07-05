@@ -9,7 +9,6 @@ import InventoryModule from "./inventory.module";
     TypeGraphQLModule.forRoot({
       driver: ApolloFederationDriver,
       federationVersion: 1,
-      validate: false,
       skipCheck: true,
     }),
     InventoryModule,

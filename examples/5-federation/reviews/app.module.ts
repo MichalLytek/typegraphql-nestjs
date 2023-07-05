@@ -9,7 +9,6 @@ import ReviewModule from "./reviews.module";
     TypeGraphQLModule.forRoot({
       driver: ApolloFederationDriver,
       federationVersion: 1,
-      validate: false,
       skipCheck: true,
     }),
     ReviewModule,

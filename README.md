@@ -45,9 +45,8 @@ import { authChecker } from "./auth";
     TypeGraphQLModule.forRoot({
       driver: ApolloDriver,
       emitSchemaFile: true,
-      validate: false,
       authChecker,
-      dateScalarMode: "timestamp",
+      scalarsMap: [{ type: Date, scalar: GraphQLTimestamp }],
       context: ({ req }) => ({ currentUser: req.user }),
     }),
     RecipeModule,
@@ -117,8 +116,7 @@ Example of using the config service to generate `TypeGraphQLModule` options:
         cors: true,
         debug: config.isDevelopmentMode,
         playground: !config.isDevelopmentMode,
-        validate: false,
-        dateScalarMode: "timestamp",
+        scalarsMap: [{ type: Date, scalar: GraphQLTimestamp }],
         emitSchemaFile:
           config.isDevelopmentMode && path.resolve(__dirname, "schema.gql"),
       }),

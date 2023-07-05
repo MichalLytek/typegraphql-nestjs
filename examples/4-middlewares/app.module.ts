@@ -11,7 +11,6 @@ import LoggingModule from "./logging/module";
     TypeGraphQLModule.forRoot({
       driver: ApolloDriver,
       emitSchemaFile: true,
-      validate: false,
       // register middlewares in settings
       globalMiddlewares: [LoggingMiddleware],
     }),
@@ -20,4 +19,4 @@ import LoggingModule from "./logging/module";
     LoggingModule,
   ],
 })
-export default class AppModule { }
+export default class AppModule {}
