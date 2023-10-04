@@ -6,7 +6,6 @@ import RecipeModule from "./recipe/module";
 
 @Module({
   imports: [
-    // TypeGraphQLModule.forRoot<ApolloDriverConfig>({
     TypeGraphQLModule.forRoot({
       driver: ApolloDriver,
       emitSchemaFile: true,
