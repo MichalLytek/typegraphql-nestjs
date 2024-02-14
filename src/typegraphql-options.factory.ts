@@ -9,7 +9,6 @@ import {
 import deepMerge from "lodash.merge";
 import { buildSubgraphSchema } from "@apollo/subgraph";
 import gql from "graphql-tag";
-import { ApolloFederationDriver } from "@nestjs/apollo";
 
 import {
   TYPEGRAPHQL_ROOT_MODULE_OPTIONS,
@@ -28,15 +27,15 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
   ) {}
 
   async createGqlOptions(): Promise<GqlModuleOptions> {
-    const { globalMiddlewares, driver, federationVersion } =
-      this.rootModuleOptions;
+    const { globalMiddlewares, federationVersion } = this.rootModuleOptions;
     const { resolversClasses, container, orphanedTypes, referenceResolvers } =
       this.optionsPreparatorService.prepareOptions(
         TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
         globalMiddlewares,
       );
 
-    const isFederatedModule = driver === ApolloFederationDriver;
+    const isFederatedModule =
+      federationVersion === 1 || federationVersion === 2;
 
     let schema = await buildSchema({
       ...this.rootModuleOptions,
@@ -46,12 +45,6 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
     });
 
     if (isFederatedModule) {
-      if (!federationVersion) {
-        throw new Error(
-          "You need to provide `federationVersion` option to `TypeGraphQLModule.forRoot()` when using `ApolloFederationDriver`",
-        );
-      }
-
       // build Apollo Subgraph schema
       const federatedSchema = buildSubgraphSchema({
         typeDefs: gql(printSubgraphSchema(schema, federationVersion)),
