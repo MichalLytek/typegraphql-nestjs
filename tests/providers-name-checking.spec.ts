@@ -8,7 +8,7 @@ import { TypeGraphQLModule } from "../src/typegraphql.module";
 
 describe("Providers name checking", () => {
   afterAll(async () => {
-    fs.unlinkSync(path.join(__dirname, "../schema.gql"));
+    fs.unlinkSync(path.join(__dirname, "../schema.graphql"));
   });
 
   @Resolver()
@@ -46,7 +46,7 @@ describe("Providers name checking", () => {
     }).compile();
 
     const generatedSchema = fs.readFileSync(
-      path.join(__dirname, "../schema.gql"),
+      path.join(__dirname, "../schema.graphql"),
       "utf-8",
     );
 

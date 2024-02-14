@@ -118,7 +118,7 @@ Example of using the config service to generate `TypeGraphQLModule` options:
         playground: !config.isDevelopmentMode,
         scalarsMap: [{ type: Date, scalar: GraphQLTimestamp }],
         emitSchemaFile:
-          config.isDevelopmentMode && path.resolve(__dirname, "schema.gql"),
+          config.isDevelopmentMode && path.resolve(__dirname, "schema.graphql"),
       }),
     }),
   ],
@@ -212,7 +212,7 @@ You can see some examples of the integration in this repo:
 
 Most of them you can run by using `ts-node`, like `npx ts-node ./examples/1-basics/index.ts`.
 
-All examples folders contain a `query.gql` file with some examples operations you can perform on the GraphQL servers.
+All examples folders contain a `query.graphql` file with some examples operations you can perform on the GraphQL servers.
 
 ## Security contact information
 

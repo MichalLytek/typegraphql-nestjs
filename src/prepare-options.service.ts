@@ -3,7 +3,7 @@ import { ModulesContainer, ModuleRef, ContextIdFactory } from "@nestjs/core";
 import { REQUEST_CONTEXT_ID } from "@nestjs/core/router/request/request-constants";
 import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { ClassType, ContainerType, getMetadataStorage } from "type-graphql";
-import { Middleware } from "type-graphql/dist/interfaces/Middleware";
+import { type Middleware } from "type-graphql/build/typings/typings/middleware";
 
 import { TypeGraphQLFeatureModuleOptions } from "./types";
 
@@ -12,7 +12,7 @@ export default class OptionsPreparatorService {
   constructor(
     private readonly moduleRef: ModuleRef,
     private readonly modulesContainer: ModulesContainer,
-  ) { }
+  ) {}
 
   prepareOptions(
     featureModuleToken: string,
@@ -35,7 +35,9 @@ export default class OptionsPreparatorService {
           typeof provider.name === "string" &&
           provider.name.includes(featureModuleToken)
         ) {
-          featureModuleOptionsArray.push(provider.instance as TypeGraphQLFeatureModuleOptions);
+          featureModuleOptionsArray.push(
+            provider.instance as TypeGraphQLFeatureModuleOptions,
+          );
         }
         if (globalResolvers.includes(provider.metatype)) {
           providersMetadataMap.set(provider.metatype, provider);
@@ -57,10 +59,10 @@ export default class OptionsPreparatorService {
     const referenceResolvers =
       referenceResolversArray.length > 0
         ? Object.fromEntries(
-          referenceResolversArray.flatMap(it =>
-            Object.entries(it.referenceResolvers!),
-          ),
-        )
+            referenceResolversArray.flatMap(it =>
+              Object.entries(it.referenceResolvers!),
+            ),
+          )
         : undefined;
 
     const container: ContainerType = {
