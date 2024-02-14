@@ -27,11 +27,10 @@ export default class TypeGraphQLOptionsFactory implements GqlOptionsFactory {
   ) {}
 
   async createGqlOptions(): Promise<GqlModuleOptions> {
-    const { globalMiddlewares, federationVersion } = this.rootModuleOptions;
+    const { federationVersion } = this.rootModuleOptions;
     const { resolversClasses, container, orphanedTypes, referenceResolvers } =
       this.optionsPreparatorService.prepareOptions(
         TYPEGRAPHQL_FEATURE_MODULE_OPTIONS,
-        globalMiddlewares,
       );
 
     const isFederatedModule =

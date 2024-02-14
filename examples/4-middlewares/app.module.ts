@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ApolloDriver } from "@nestjs/apollo";
 import { TypeGraphQLModule } from "../../src";
-import { LoggingMiddleware } from "./logging/middleware";
 
+import { AppContext } from "./context";
 import RecipeModule from "./recipe/module";
 import LoggingModule from "./logging/module";
+import { GlobalLoggingMiddleware } from "./logging/global-logging-middleware";
 
 @Module({
   imports: [
@@ -12,7 +13,9 @@ import LoggingModule from "./logging/module";
       driver: ApolloDriver,
       emitSchemaFile: true,
       // register middlewares in settings
-      globalMiddlewares: [LoggingMiddleware],
+      globalMiddlewares: [GlobalLoggingMiddleware],
+      // use fake context
+      context: (): AppContext => ({ user: "Johny Debugger" }),
     }),
     RecipeModule,
     // import module with middleware provider
