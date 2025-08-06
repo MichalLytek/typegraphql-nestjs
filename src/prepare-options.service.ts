@@ -60,6 +60,7 @@ export default class OptionsPreparatorService {
         if (!contextId) {
           contextId = ContextIdFactory.create();
           context[REQUEST_CONTEXT_ID] = contextId;
+          this.moduleRef.registerRequestByContextId(context, contextId);
         }
         const providerMetadata = providersMetadataMap.get(cls)!;
         if (
