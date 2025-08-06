@@ -31,10 +31,10 @@ export default class OptionsPreparatorService {
             provider.instance as TypeGraphQLFeatureModuleOptions,
           );
         }
-        if (globalResolvers.includes(provider.metatype)) {
+        if (globalResolvers.includes(provider.metatype!)) {
           resolversClasses.push(provider.metatype as ClassType);
         }
-        providersMetadataMap.set(provider.metatype, provider);
+        providersMetadataMap.set(provider.metatype!, provider);
       }
     }
 
@@ -60,6 +60,8 @@ export default class OptionsPreparatorService {
         if (!contextId) {
           contextId = ContextIdFactory.create();
           context[REQUEST_CONTEXT_ID] = contextId;
+          // Path by: https://github.com/ahilke
+          this.moduleRef.registerRequestByContextId(context, contextId);
         }
         const providerMetadata = providersMetadataMap.get(cls)!;
         if (
