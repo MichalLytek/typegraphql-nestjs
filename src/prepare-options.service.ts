@@ -19,7 +19,7 @@ export default class OptionsPreparatorService {
     );
     const featureModuleOptionsArray: TypeGraphQLFeatureModuleOptions[] = [];
     const resolversClasses: ClassType[] = [];
-    const providersMetadataMap = new Map<Function, InstanceWrapper<any>>();
+    const providersMetadataMap = new Map<Function, InstanceWrapper>();
 
     for (const module of this.modulesContainer.values()) {
       for (const provider of module.providers.values()) {
@@ -31,10 +31,12 @@ export default class OptionsPreparatorService {
             provider.instance as TypeGraphQLFeatureModuleOptions,
           );
         }
-        if (globalResolvers.includes(provider.metatype)) {
-          resolversClasses.push(provider.metatype as ClassType);
+        if (provider.metatype) {
+          if (globalResolvers.includes(provider.metatype)) {
+            resolversClasses.push(provider.metatype as ClassType);
+          }
+          providersMetadataMap.set(provider.metatype, provider);
         }
-        providersMetadataMap.set(provider.metatype, provider);
       }
     }
 
